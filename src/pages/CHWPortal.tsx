@@ -172,7 +172,8 @@ export const CHWPortal: React.FC = () => {
       </div>
 
       {/* 2. CHW Portal Navigation Bar */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1">
+      <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-1">
+
         <button
           onClick={() => setActiveTab('intake')}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-extrabold transition-all border whitespace-nowrap ${

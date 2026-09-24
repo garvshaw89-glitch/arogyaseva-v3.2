@@ -75,8 +75,8 @@ export const DoctorAdviceModal: React.FC<DoctorAdviceModalProps> = ({ clinicalCa
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fadeIn">
-      <div className="card-medical rounded-2xl max-w-2xl w-full p-6 bg-white border border-slate-200 shadow-2xl space-y-5 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs animate-fadeIn overflow-y-auto">
+      <div className="card-medical rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-4 sm:p-6 bg-white border border-slate-200 shadow-2xl space-y-4 sm:space-y-5 relative my-auto">
         <div className="flex items-center justify-between pb-3 border-b border-slate-200">
           <div className="flex items-center gap-2">
             <div className="p-2.5 rounded-xl bg-red-100 text-red-700 border border-red-200">

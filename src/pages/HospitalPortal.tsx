@@ -452,8 +452,9 @@ export const HospitalPortal: React.FC = () => {
 
       {/* 6. APPROVAL & ICU BED RESERVATION MODAL */}
       {approvalModalRef && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fadeIn">
-          <div className="card-medical max-w-lg w-full p-6 bg-white shadow-2xl space-y-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs animate-fadeIn overflow-y-auto">
+          <div className="card-medical max-w-lg w-full max-h-[90vh] overflow-y-auto p-4 sm:p-6 bg-white shadow-2xl space-y-5 my-auto">
+
             
             <div className="flex items-center justify-between border-b border-slate-200 pb-4">
               <div className="flex items-center gap-3">
