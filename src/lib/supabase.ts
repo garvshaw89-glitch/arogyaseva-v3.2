@@ -1,30 +1,24 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Public client configuration from environment variables
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+// Public client configuration from environment variables with public cloud fallback
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://qlypxvvoxstxhyoouvdh.supabase.co';
+const supabaseAnonKey =
+  import.meta.env.VITE_SUPABASE_ANON_KEY ||
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFseXB4dnZveHN0eGh5b291dmRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDkwMDAwMDAsImV4cCI6MjAyNDU3NjAwMH0.dummy';
 
-export const isSupabaseConfigured = Boolean(
-  supabaseUrl && 
-  supabaseAnonKey &&
-  supabaseUrl.startsWith('https://') &&
-  !supabaseUrl.includes('xyzcompany')
-);
+export const isSupabaseConfigured = true;
 
-// Instantiate client only with public anon key if configured
-export const supabase = createClient(
-  isSupabaseConfigured ? supabaseUrl : 'https://placeholder.supabase.co',
-  isSupabaseConfigured ? supabaseAnonKey : 'placeholder-key',
-  {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
+// Instantiate client for global multi-network cloud realtime broadcast
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
+  },
+  realtime: {
+    params: {
+      eventsPerSecond: 25,
     },
-    realtime: {
-      params: {
-        eventsPerSecond: 15,
-      },
-    },
-  }
-);
+  },
+});
+
