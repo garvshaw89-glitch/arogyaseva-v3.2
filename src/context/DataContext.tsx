@@ -62,13 +62,46 @@ const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [selectedState, setSelectedState] = useState<StateRegion>(INDIAN_STATES[0]);
-  const [patients, setPatients] = useState<Patient[]>(INITIAL_PATIENTS);
-  const [cases, setCases] = useState<ClinicalCase[]>(INITIAL_CASES);
-  const [referrals, setReferrals] = useState<Referral[]>(INITIAL_REFERRALS);
+  const [patients, setPatients] = useState<Patient[]>(() => {
+    try {
+      const saved = localStorage.getItem('arogyaseva_saved_patients_v3');
+      return saved ? JSON.parse(saved) : INITIAL_PATIENTS;
+    } catch (e) {
+      return INITIAL_PATIENTS;
+    }
+  });
+
+  const [cases, setCases] = useState<ClinicalCase[]>(() => {
+    try {
+      const saved = localStorage.getItem('arogyaseva_saved_cases_v3');
+      return saved ? JSON.parse(saved) : INITIAL_CASES;
+    } catch (e) {
+      return INITIAL_CASES;
+    }
+  });
+
+  const [referrals, setReferrals] = useState<Referral[]>(() => {
+    try {
+      const saved = localStorage.getItem('arogyaseva_saved_referrals_v3');
+      return saved ? JSON.parse(saved) : INITIAL_REFERRALS;
+    } catch (e) {
+      return INITIAL_REFERRALS;
+    }
+  });
+
   const [hospitals, setHospitals] = useState<Hospital[]>(
     INITIAL_HOSPITALS.filter((h) => h.stateId === INDIAN_STATES[0].id)
   );
-  const [notifications, setNotifications] = useState<NotificationItem[]>(INITIAL_NOTIFICATIONS);
+
+  const [notifications, setNotifications] = useState<NotificationItem[]>(() => {
+    try {
+      const saved = localStorage.getItem('arogyaseva_saved_notifications_v3');
+      return saved ? JSON.parse(saved) : INITIAL_NOTIFICATIONS;
+    } catch (e) {
+      return INITIAL_NOTIFICATIONS;
+    }
+  });
+
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>('LIVE');
   const [pendingSyncCount, setPendingSyncCount] = useState<number>(0);
   const [userLocation, setUserLocation] = useState<UserCoordinates | null>({
@@ -80,6 +113,32 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   });
   const [activeToast, setActiveToast] = useState<ToastAlert | null>(null);
   const [audioAlertEnabled, setAudioAlertEnabled] = useState<boolean>(true);
+
+  // Auto-persist state updates to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('arogyaseva_saved_cases_v3', JSON.stringify(cases));
+    } catch (e) {}
+  }, [cases]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('arogyaseva_saved_patients_v3', JSON.stringify(patients));
+    } catch (e) {}
+  }, [patients]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('arogyaseva_saved_referrals_v3', JSON.stringify(referrals));
+    } catch (e) {}
+  }, [referrals]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('arogyaseva_saved_notifications_v3', JSON.stringify(notifications));
+    } catch (e) {}
+  }, [notifications]);
+
 
   // Sound alert player
   const playAlertSound = useCallback((type: string) => {
