@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { DataProvider } from './context/DataContext';
 import { Toast } from './components/common/Toast';
 import { CustomCursor } from './components/common/CustomCursor';
+import { ArogyaSevaSplash } from './components/splash/ArogyaSevaSplash';
 import { CHWLayout } from './components/layout/CHWLayout';
 import { DoctorLayout } from './components/layout/DoctorLayout';
 import { HospitalLayout } from './components/layout/HospitalLayout';
@@ -18,12 +19,29 @@ import { Header } from './components/common/Header';
 import { Footer } from './components/common/Footer';
 
 export function App() {
+  const [showSplash, setShowSplash] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const seen = sessionStorage.getItem('arogyaseva_splash_seen_v3');
+      return !seen;
+    }
+    return true;
+  });
+
+  const handleSplashComplete = () => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('arogyaseva_splash_seen_v3', 'true');
+    }
+    setShowSplash(false);
+  };
+
   return (
     <AuthProvider>
       <DataProvider>
         <Router>
           <CustomCursor />
+          {showSplash && <ArogyaSevaSplash onComplete={handleSplashComplete} />}
           <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-red-600 selection:text-white">
+
 
             <Routes>
               
