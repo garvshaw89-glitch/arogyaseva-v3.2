@@ -4,14 +4,23 @@ interface PulseVitalsCanvasProps {
   bpm?: number;
   isEmergency?: boolean;
   className?: string;
+  heartRate?: number;
+  spO2?: number;
+  isCritical?: boolean;
 }
 
 export const PulseVitalsCanvas: React.FC<PulseVitalsCanvasProps> = ({
-  bpm = 78,
-  isEmergency = false,
-  className = 'w-full h-32'
+  bpm,
+  isEmergency,
+  className = 'w-full h-32',
+  heartRate = 78,
+  spO2 = 98,
+  isCritical = false
 }) => {
+  const activeBpm = bpm || heartRate;
+  const activeEmergency = isEmergency || isCritical;
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -24,8 +33,8 @@ export const PulseVitalsCanvas: React.FC<PulseVitalsCanvasProps> = ({
     const points: number[] = [];
     const maxPoints = 300;
 
-    const lineColor = isEmergency ? '#EF4444' : '#00F2FE';
-    const glowColor = isEmergency ? 'rgba(239, 68, 68, 0.4)' : 'rgba(0, 242, 254, 0.35)';
+    const lineColor = activeEmergency ? '#EF4444' : '#00F2FE';
+    const glowColor = activeEmergency ? 'rgba(239, 68, 68, 0.4)' : 'rgba(0, 242, 254, 0.35)';
 
     const render = () => {
       animId = requestAnimationFrame(render);
@@ -54,7 +63,7 @@ export const PulseVitalsCanvas: React.FC<PulseVitalsCanvasProps> = ({
       }
 
       // Generate ECG P-Q-R-S-T wave pattern
-      x += (bpm / 60) * 2;
+      x += (activeBpm / 60) * 2;
       const cycle = x % 100;
       let y = centerY;
 
@@ -63,7 +72,8 @@ export const PulseVitalsCanvas: React.FC<PulseVitalsCanvasProps> = ({
       } else if (cycle >= 42 && cycle < 45) {
         y = centerY + 8; // Q wave
       } else if (cycle >= 45 && cycle < 52) {
-        y = centerY - (isEmergency ? 48 : 36); // R wave peak
+        y = centerY - (activeEmergency ? 48 : 36); // R wave peak
+
       } else if (cycle >= 52 && cycle < 56) {
         y = centerY + 18; // S wave dip
       } else if (cycle >= 65 && cycle < 75) {

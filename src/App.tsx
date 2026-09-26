@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { DataProvider } from './context/DataContext';
 import { Toast } from './components/common/Toast';
+import { CustomCursor } from './components/common/CustomCursor';
 import { CHWLayout } from './components/layout/CHWLayout';
 import { DoctorLayout } from './components/layout/DoctorLayout';
 import { HospitalLayout } from './components/layout/HospitalLayout';
@@ -21,7 +22,9 @@ export function App() {
     <AuthProvider>
       <DataProvider>
         <Router>
+          <CustomCursor />
           <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-red-600 selection:text-white">
+
             <Routes>
               
               {/* Ecosystem Landing & Launcher Gateway */}
